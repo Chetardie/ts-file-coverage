@@ -1,0 +1,29 @@
+# Build output
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Test fixtures (contain intentional syntax variations)
+tests/fixtures/
+
+# Generated files
+*.min.js
+*.min.css
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Package manager files
+package-lock.json
+yarn.lock
