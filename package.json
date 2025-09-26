@@ -1,6 +1,6 @@
 {
   "name": "ts-file-coverage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Analyze TypeScript adoption in your codebase with framework-specific breakdowns and color-coded coverage reports",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
