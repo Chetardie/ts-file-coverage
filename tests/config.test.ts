@@ -20,6 +20,8 @@ describe('Configuration', () => {
         '**/build/**',
         '**/.git/**',
         '**/coverage/**',
+        '**/*.test.*',
+        '**/*.spec.*',
       ]);
     });
 

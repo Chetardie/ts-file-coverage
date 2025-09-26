@@ -37,60 +37,60 @@ describe('TypeScriptDetector', () => {
   });
 
   describe('JSX Files', () => {
-    it('should detect JSX with TypeScript imports', () => {
+    it('should treat .jsx files as JavaScript regardless of content', () => {
       const content = 'import Component from "./Component.tsx"';
-      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(true);
+      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(false);
     });
 
-    it('should detect JSX with interface declarations', () => {
+    it('should treat .jsx files with interface declarations as JavaScript', () => {
       const content = 'interface Props { name: string }';
-      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(true);
+      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(false);
     });
 
-    it('should detect JSX with type aliases', () => {
+    it('should treat .jsx files with type aliases as JavaScript', () => {
       const content = 'type ButtonProps = { label: string }';
-      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(true);
+      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(false);
     });
 
-    it('should detect JSX with React.FC type', () => {
+    it('should treat .jsx files with React.FC type as JavaScript', () => {
       const content = 'const Component: React.FC<Props> = () => {}';
-      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(true);
+      expect(detector.isTypeScriptFile('component.jsx', content)).toBe(false);
     });
 
-    it('should not detect plain JSX as TypeScript', () => {
+    it('should treat plain JSX as JavaScript', () => {
       const content = 'export default function Component() { return <div/>; }';
       expect(detector.isTypeScriptFile('component.jsx', content)).toBe(false);
     });
   });
 
   describe('JavaScript Files', () => {
-    it('should detect JS with interface as TypeScript', () => {
+    it('should treat .js files as JavaScript regardless of content', () => {
       const content = 'interface User { name: string; age: number; }';
-      expect(detector.isTypeScriptFile('file.js', content)).toBe(true);
+      expect(detector.isTypeScriptFile('file.js', content)).toBe(false);
     });
 
-    it('should detect JS with type alias as TypeScript', () => {
+    it('should treat .js files with type alias as JavaScript', () => {
       const content = 'type Status = "active" | "inactive"';
-      expect(detector.isTypeScriptFile('file.js', content)).toBe(true);
+      expect(detector.isTypeScriptFile('file.js', content)).toBe(false);
     });
 
-    it('should detect JS with enum as TypeScript', () => {
+    it('should treat .js files with enum as JavaScript', () => {
       const content = 'enum Color { Red, Green, Blue }';
-      expect(detector.isTypeScriptFile('file.js', content)).toBe(true);
+      expect(detector.isTypeScriptFile('file.js', content)).toBe(false);
     });
 
-    it('should detect JS with access modifiers as TypeScript', () => {
+    it('should treat .js files with access modifiers as JavaScript', () => {
       const content = 'class User { private name: string; }';
-      expect(detector.isTypeScriptFile('file.js', content)).toBe(true);
+      expect(detector.isTypeScriptFile('file.js', content)).toBe(false);
     });
 
-    it('should detect JS with parameter type annotations as TypeScript', () => {
+    it('should treat .js files with parameter type annotations as JavaScript', () => {
       const content =
         'function greet(name: string) { return `Hello ${name}`; }';
-      expect(detector.isTypeScriptFile('file.js', content)).toBe(true);
+      expect(detector.isTypeScriptFile('file.js', content)).toBe(false);
     });
 
-    it('should not detect plain JavaScript as TypeScript', () => {
+    it('should treat plain JavaScript as JavaScript', () => {
       const content = 'function hello() { console.log("hello"); }';
       expect(detector.isTypeScriptFile('file.js', content)).toBe(false);
     });

@@ -5,14 +5,17 @@
 
 A powerful CLI tool to analyze TypeScript adoption in your codebase. Get detailed insights into your JavaScript-to-TypeScript migration progress with framework-specific breakdowns and color-coded coverage reports.
 
+> **📋 File Classification Disclaimer**: This tool classifies files based on their file extensions and specific patterns. `.js` and `.jsx` files are treated as JavaScript, `.ts` and `.tsx` files as TypeScript, and `.vue` files are classified based on the presence of `lang="ts"` in their `<script>` tags. Test files (containing `.test.` or `.spec.` in their names) are automatically excluded from analysis.
+
 ## ✨ Features
 
 - **🎯 Smart Framework Detection**: Separate analysis for Vue.js, React, and plain JS/TS files
 - **📊 Color-Coded Coverage**: Visual indicators for TypeScript adoption levels
-- **🔍 Deep Analysis**: Detects TypeScript syntax in JavaScript files (interfaces, types, etc.)
+- **🔍 Extension-Based Classification**: Files are classified by their extensions for consistent results
 - **📈 Dual Metrics**: Both file count and line count percentages
 - **🎨 Professional Output**: Clean, organized terminal reports with conditional sections
 - **⚡ Fast & Efficient**: Quickly scans codebases of any size
+- **🧪 Test File Exclusion**: Automatically excludes test files from analysis
 
 ## 📦 Installation
 
@@ -68,7 +71,7 @@ TypeScript File Analysis
 Directory: /path/to/your/project/src
 File types: .ts, .tsx, .js, .jsx, .vue
 
-JavaScript/TypeScript Files Results:
+Results:
 - Total files: 45
 - TypeScript files: 32 (71.1%)
 - JavaScript files: 13 (28.9%)
@@ -114,16 +117,49 @@ React Files:
 
 ### Supported File Types
 
-- **`.ts`** / **`.tsx`** - TypeScript files and React components
-- **`.js`** / **`.jsx`** - JavaScript files (scanned for TypeScript syntax)
-- **`.vue`** - Vue.js Single File Components
+- **`.ts`** - TypeScript files (always treated as TypeScript)
+- **`.tsx`** - TypeScript React components (always treated as TypeScript)
+- **`.js`** - JavaScript files (always treated as JavaScript)
+- **`.jsx`** - JavaScript React components (always treated as JavaScript)
+- **`.vue`** - Vue.js Single File Components (classified by `lang="ts"` attribute)
 
-### Smart Detection Features
+### File Classification Rules
 
-- **TypeScript in JS**: Finds interfaces, type annotations, generics in `.js` files
-- **Vue TypeScript**: Detects `<script lang="ts">` in Vue components
-- **React Components**: Identifies React files by extension and naming patterns
+- **Extension-Based**: Files are classified primarily by their file extension
+- **Vue Special Case**: `.vue` files are analyzed for `<script lang="ts">` to determine TypeScript vs JavaScript
+- **React Detection**: Only `.jsx` and `.tsx` files are considered React components
+- **Test File Exclusion**: Files containing `.test.` or `.spec.` in their names are automatically ignored
 - **Framework Separation**: Groups files by Vue.js, React, or plain JS/TS
+
+### What Gets Excluded
+
+- Files in `node_modules/`, `dist/`, `build/`, `.git/`, `coverage/` directories
+- Test files: `*.test.*` and `*.spec.*` (e.g., `component.test.ts`, `utils.spec.js`)
+- Any files matching custom ignore patterns
+
+## 📏 Counting Methodology
+
+### File Classification Logic
+
+1. **`.ts` files**: Always classified as TypeScript files
+2. **`.tsx` files**: Always classified as TypeScript files (React + TypeScript)
+3. **`.js` files**: Always classified as JavaScript files
+4. **`.jsx` files**: Always classified as JavaScript files (React + JavaScript)
+5. **`.vue` files**: Classified by checking for `<script lang="ts">` or `<script setup lang="ts">` patterns
+
+### Line Counting
+
+- **All non-empty, non-comment lines** are counted in each file
+- **TypeScript files**: All lines counted as TypeScript lines
+- **JavaScript files**: All lines counted as JavaScript lines
+- **Vue files**: All lines counted as TypeScript or JavaScript based on the `lang` attribute
+
+### Important Notes
+
+- **No syntax analysis**: The tool does NOT analyze JavaScript files for TypeScript syntax
+- **Extension-based**: Classification is purely based on file extensions (except Vue files)
+- **Consistent results**: This approach ensures predictable and consistent analysis across different codebases
+- **Migration tracking**: Perfect for tracking progress as you rename `.js` → `.ts` and `.jsx` → `.tsx` files
 
 ### Coverage Indicators
 
@@ -146,6 +182,35 @@ analyzer.analyze().then(results => {
   console.log(`React files: ${results.summary.react.totalFiles}`);
 });
 ```
+
+## ❓ Frequently Asked Questions
+
+### Why doesn't the tool detect TypeScript syntax in `.js` files?
+
+This tool uses an **extension-based approach** for consistent and predictable results. A `.js` file is always treated as JavaScript, regardless of its content. This design choice:
+
+- Ensures consistent results across different runs
+- Reflects the actual file type as understood by TypeScript compiler
+- Makes migration tracking straightforward (rename `.js` → `.ts` to see progress)
+
+### How are Vue files handled?
+
+Vue files are special-cased to check for the `lang="ts"` attribute in `<script>` tags:
+
+- `<script lang="ts">` → Classified as TypeScript
+- `<script setup lang="ts">` → Classified as TypeScript
+- `<script>` (no lang attribute) → Classified as JavaScript
+
+### What files are excluded from analysis?
+
+- Test files: Any file containing `.test.` or `.spec.` in the filename
+- Build directories: `node_modules/`, `dist/`, `build/`, `coverage/`
+- Version control: `.git/` directory
+- Custom patterns: Any additional ignore patterns you specify
+
+### Can I include test files in the analysis?
+
+Currently, test files are automatically excluded. This is by design to focus on production code analysis. If you need to analyze test files, you can modify the ignore patterns in the configuration.
 
 ## 🛠️ Development
 

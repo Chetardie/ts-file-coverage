@@ -29,12 +29,12 @@ describe('FileAnalyzerService', () => {
       expect(result.typeScriptLines).toBe(0);
     });
 
-    it('should detect TypeScript syntax in JS files', async () => {
+    it('should treat JS files as JavaScript regardless of content', async () => {
       const result = await fileAnalyzer.analyzeFile(
         getFixturePath('mixed-content', 'partial-ts.js')
       );
 
-      expect(result.isTypeScriptFile).toBe(true);
+      expect(result.isTypeScriptFile).toBe(false);
       expect(result.extension).toBe('.js');
     });
 
@@ -84,13 +84,13 @@ describe('FileAnalyzerService', () => {
       expect(result.isTypeScriptFile).toBe(false);
     });
 
-    it('should detect TypeScript in JSX files', async () => {
+    it('should treat JSX files as JavaScript regardless of content', async () => {
       const result = await fileAnalyzer.analyzeFile(
         getFixturePath('jsx', 'TypeScriptComponent.jsx')
       );
 
       expect(result.extension).toBe('.jsx');
-      expect(result.isTypeScriptFile).toBe(true);
+      expect(result.isTypeScriptFile).toBe(false);
     });
 
     it('should handle file metadata correctly', async () => {

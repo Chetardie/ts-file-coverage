@@ -3,8 +3,6 @@ import {
   TYPESCRIPT_EXTENSIONS,
   VUE_EXTENSION,
   VUE_TYPESCRIPT_PATTERN,
-  TYPESCRIPT_SYNTAX_PATTERNS,
-  JSX_TYPESCRIPT_PATTERNS,
 } from '../config';
 import { SupportedExtension } from '../types';
 
@@ -20,14 +18,6 @@ export class TypeScriptDetector {
       return this.isVueWithTypeScript(content);
     }
 
-    if (this.isJsxExtension(extension)) {
-      return this.hasTypeScriptSyntaxInJsx(content);
-    }
-
-    if (this.isJsExtension(extension)) {
-      return this.hasDefinitiveTypeScriptSyntax(content);
-    }
-
     return false;
   }
 
@@ -41,23 +31,7 @@ export class TypeScriptDetector {
     return extension === VUE_EXTENSION;
   }
 
-  private isJsxExtension(extension: string): boolean {
-    return extension === '.jsx';
-  }
-
-  private isJsExtension(extension: string): boolean {
-    return extension === '.js';
-  }
-
   private isVueWithTypeScript(content: string): boolean {
     return VUE_TYPESCRIPT_PATTERN.test(content);
-  }
-
-  private hasTypeScriptSyntaxInJsx(content: string): boolean {
-    return JSX_TYPESCRIPT_PATTERNS.some(pattern => pattern.test(content));
-  }
-
-  private hasDefinitiveTypeScriptSyntax(content: string): boolean {
-    return TYPESCRIPT_SYNTAX_PATTERNS.some(pattern => pattern.test(content));
   }
 }
