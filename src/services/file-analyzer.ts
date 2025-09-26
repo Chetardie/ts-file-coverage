@@ -53,20 +53,6 @@ export class FileAnalyzerService {
       return 'react';
     }
 
-    // Check if it's a React component file based on naming convention
-    const fileName = filePath.toLowerCase();
-    if (
-      (extension === '.js' || extension === '.ts') &&
-      (fileName.includes('component') ||
-        fileName.includes('hook') ||
-        fileName.includes('page') ||
-        fileName.includes('view') ||
-        /[A-Z]/.test(filePath.split('/').pop()?.split('.')[0] || ''))
-    ) {
-      // This is a heuristic - could be enhanced with content analysis
-      return 'react';
-    }
-
     return null;
   }
 
